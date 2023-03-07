@@ -432,7 +432,8 @@ public:
    */
   bool publishABCDPlane(const double A, const double B, const double C, const double D, colors color = TRANSLUCENT,
                         double x_width = 1.0, double y_width = 1.0);
-
+  bool publishABCXYZPlane(const double A, const double B, const double C, const double X, const double Y, const double Z, colors color = TRANSLUCENT,
+                        double x_width = 1.0, double y_width = 1.0);
   /**
    * \brief Display the XY plane of a given pose
    * \param pose - the position of the plane

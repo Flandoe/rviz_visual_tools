@@ -137,6 +137,17 @@ set_target_properties(${PROJECT_NAME}_imarker_simple_demo
   imarker_simple_demo PREFIX ""
 )
 
+# Demo executable
+add_executable(${PROJECT_NAME}_mydemo src/my.cpp)
+target_link_libraries(${PROJECT_NAME}_mydemo
+  ${catkin_LIBRARIES} ${PROJECT_NAME}
+)
+set_target_properties(${PROJECT_NAME}_mydemo
+  PROPERTIES
+  OUTPUT_NAME
+  mydemo PREFIX ""
+)
+
 ##########
 ## TEST ##
 ##########

@@ -1000,6 +1000,30 @@ bool RvizVisualTools::publishABCDPlane(const double A, const double B, const dou
   return true;
 }
 
+bool RvizVisualTools::publishABCXYZPlane(const double A, const double B, const double C, const double X, const double Y, const double Z, colors color,
+                                       double x_width, double y_width)
+{
+  // The coefficients A,B,C give the normal to the plane.
+  Eigen::Vector3d n(A, B, C);
+
+  // Graphic is centered at this point
+  Eigen::Vector3d center;
+  center<< X, Y, Z;
+
+  Eigen::Isometry3d pose;
+  pose.translation() = center;
+
+  // Calculate the rotation matrix from the original normal z_0 = (0,0,1) to new normal n = (A,B,C)
+  Eigen::Vector3d z_0 = Eigen::Vector3d::UnitZ();
+  Eigen::Quaterniond q = Eigen::Quaterniond::FromTwoVectors(z_0, n);
+  pose.linear() = q.toRotationMatrix();
+
+  double height = 0.001;  // very thin
+  publishCuboid(pose, x_width, y_width, height, color);
+
+  return true;
+}
+
 bool RvizVisualTools::publishXYPlane(const Eigen::Isometry3d& pose, colors color, double scale)
 {
   return publishXYPlane(convertPose(pose), color, scale);

@@ -147,10 +147,28 @@ public:
     //   x_location += step;
     // }
     // visual_tools_->publishABCDPlane(0.997397, -0.0720573, 0.00263565, 15.0638892548455, rvt::MAGENTA, x_width, y_width);
-    visual_tools_->publishABCXYZPlane(0.997397, -0.0720573, 0.00263565, -14.303960, 10.915579, -0.558252, rvt::MAGENTA, 10, 10);
-    visual_tools_->publishABCXYZPlane(0.999056, -0.0413521, -0.0132835, -12.227930, 12.720082, -0.045222, rvt::MAGENTA, 10, 10);
-    visual_tools_->publishABCXYZPlane(0.998654, -0.0489393, -0.0171942, -13.358409, 10.575362, -0.478792, rvt::MAGENTA, 10, 10);
-    visual_tools_->publishABCXYZPlane(0.0389379, 0.998547, 0.0372547, -13.625232, 13.652045, -0.365729, rvt::MAGENTA, 10, 10);
+    // visual_tools_->publishABCXYZPlane(0.997397, -0.0720573, 0.00263565, -14.303960, 10.915579, -0.558252, rvt::MAGENTA, 10, 10);
+    // visual_tools_->publishABCXYZPlane(0.999056, -0.0413521, -0.0132835, -12.227930, 12.720082, -0.045222, rvt::MAGENTA, 10, 10);
+    // visual_tools_->publishABCXYZPlane(0.998654, -0.0489393, -0.0171942, -13.358409, 10.575362, -0.478792, rvt::MAGENTA, 10, 10);
+    // visual_tools_->publishABCXYZPlane(0.0389379, 0.998547, 0.0372547, -13.625232, 13.652045, -0.365729, rvt::MAGENTA, 10, 10);
+    
+    // visual_tools_->publishABCXYZPlane(0.678832 , 0.734179 , -0.0129817, -15.813153, 6.545786, -0.602630, rvt::RED, 10, 10);
+    // visual_tools_->publishABCXYZPlane(0.65166 , 0.758039 , -0.0267445, -14.911167, 7.007274, -0.668613, rvt::RED, 10, 10);
+    // visual_tools_->publishABCXYZPlane(0.759979 , -0.649283 , -0.0293799, -17.001572, 8.339624, -0.524730, rvt::RED, 10, 10);
+    // visual_tools_->publishABCXYZPlane(0.633811 , 0.772973 , -0.0282195, -15.539643, 8.905488, -0.304419, rvt::RED, 10, 10);
+    // // visual_tools_->publishABCXYZPlane(0.717488 , -0.696443 , -0.0133388, -14.241579, 5.497253, 9.145461, rvt::RED, 10, 10,0.01);
+    // visual_tools_->publishABCXYZPlane(0.75093 , -0.66038 , -0.00151955, -14.065008, 5.638114, 6.117486, rvt::RED, 10, 10,0.01);
+    double width_my = 5;
+    double length_my = 5;
+    double height_my = 0.02;
+    visual_tools_->publishABCXYZPlane(0.6604 , 0.7509 , 0.0, -15.813153, 6.545786, -0.602630, rvt::RED, length_my,width_my, height_my);
+    visual_tools_->publishABCXYZPlane(0.6604 , 0.7509 , 0.0, -14.911167, 7.007274, -0.668613, rvt::RED, length_my,width_my, height_my);
+    visual_tools_->publishABCXYZPlane(0.75093 , -0.66038 , 0.0, -17.001572, 8.339624, -0.524730, rvt::RED, length_my,width_my, height_my);
+    visual_tools_->publishABCXYZPlane(0.6604 , 0.7509 , 0.0, -15.539643, 8.905488, -0.304419, rvt::RED, length_my,width_my, height_my);
+    visual_tools_->publishABCXYZPlane(0.75093 , -0.66038 , 0.0, -14.065008, 5.638114, 6.117486, rvt::RED, length_my,width_my, height_my);
+    visual_tools_->publishABCXYZPlane(0.75093 , -0.66038 , 0.0, -13.434724,6.922389,1.822765, rvt::RED, length_my,width_my, height_my);
+    visual_tools_->publishABCXYZPlane(0.75093 , -0.66038 , 0.0, -14.160015,6.039485,19.208918, rvt::GREEN, length_my,width_my, height_my);
+    visual_tools_->publishABCXYZPlane(0.0 , 0.0 , 1.0, -19.012680, 0.872816, 20.134787, rvt::RED, length_my,width_my, height_my);
     // Set x location for next visualization function
     x_location += 1.25;
 

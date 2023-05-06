@@ -977,7 +977,7 @@ bool RvizVisualTools::publishCone(const geometry_msgs::Pose& pose, double angle,
 }
 
 bool RvizVisualTools::publishABCDPlane(const double A, const double B, const double C, const double D, colors color,
-                                       double x_width, double y_width)
+                                       double x_width, double y_width, double height)//height default value is 0.001, it is very thin
 {
   // The coefficients A,B,C give the normal to the plane.
   Eigen::Vector3d n(A, B, C);
@@ -994,7 +994,7 @@ bool RvizVisualTools::publishABCDPlane(const double A, const double B, const dou
   Eigen::Quaterniond q = Eigen::Quaterniond::FromTwoVectors(z_0, n);
   pose.linear() = q.toRotationMatrix();
 
-  double height = 0.001;  // very thin
+
   publishCuboid(pose, x_width, y_width, height, color);
 
   return true;

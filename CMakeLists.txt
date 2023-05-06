@@ -20,6 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_geometry_msgs
   trajectory_msgs
   visualization_msgs
+  my_slam
 )
 
 find_package(Eigen3 REQUIRED)

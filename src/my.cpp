@@ -42,10 +42,12 @@
 
 // For visualizing things in rviz
 #include <rviz_visual_tools/rviz_visual_tools.h>
+#include "my_slam/planes_info.h"
 
 // C++
-#include <string>
-#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <iterator>
 
 namespace rvt = rviz_visual_tools;
 
@@ -63,6 +65,10 @@ private:
   std::string name_;
 
 public:
+  std::vector<float> X_old;
+  std::vector<float> Y_old;
+  std::vector<float> Z_old;
+  ros::Subscriber subPlane;
   /**
    * \brief Constructor
    */
@@ -70,6 +76,7 @@ public:
   {
     visual_tools_.reset(new rvt::RvizVisualTools("map", "/rviz_visual_tools"));
     visual_tools_->loadMarkerPub();  // create publisher before waiting
+    subPlane   = nh_.subscribe<my_slam::planes_info> ("my_slam/mapping/global_planes", 20, &RvizVisualToolsDemo::planesHandler, this, ros::TransportHints().tcpNoDelay());
 
     // ROS_INFO("Sleeping 5 seconds before running demo");
     // ros::Duration(5.0).sleep();
@@ -77,6 +84,81 @@ public:
     // Clear messages
     visual_tools_->deleteAllMarkers();
     visual_tools_->enableBatchPublishing();
+  }
+
+  /**
+   * description: plot planes
+   */
+  void planesHandler(const my_slam::planes_infoConstPtr& msgIn)
+  {
+    double width_my, length_my, height_my;
+    height_my = 0.02;
+    if(X_old.empty())
+    {    
+      std::vector<float> X_v(begin(msgIn->X_planes), end(msgIn->X_planes));
+      std::vector<float> Y_v(begin(msgIn->Y_planes), end(msgIn->Y_planes));
+      std::vector<float> Z_v(begin(msgIn->Z_planes), end(msgIn->Z_planes));
+
+      width_my = 5; length_my = 25; 
+      for (int i = 0;i<X_v.size();i++)
+      {
+        visual_tools_->publishABCDPlane(0.0, 1.0, 0.0, -X_v[i], rvt::RED, length_my, width_my, height_my);
+      }
+      width_my = 25; length_my = 5;
+      for (int i = 0;i<Y_v.size();i++)
+      {
+        visual_tools_->publishABCDPlane(1.0, 0.0, 0.0, -Y_v[i], rvt::GREEN, length_my, width_my, height_my);
+      }
+      width_my = 25; length_my = 25;
+      for (int i = 0;i<Z_v.size();i++)
+      {
+        visual_tools_->publishABCDPlane(0.0, 0.0, 1.0, -Z_v[i], rvt::BLUE, length_my, width_my, height_my);
+      }
+
+      X_old = X_v;
+      Y_old = Y_v;
+      Z_old = Z_v;
+    }
+    else
+    {
+      std::vector<float> X_v(begin(msgIn->X_planes), end(msgIn->X_planes));
+      std::vector<float> Y_v(begin(msgIn->Y_planes), end(msgIn->Y_planes));
+      std::vector<float> Z_v(begin(msgIn->Z_planes), end(msgIn->Z_planes));
+      std::vector<float> X_symDifference;
+      std::set_symmetric_difference(
+        X_v.begin(), X_v.end(),
+        X_old.begin(), X_old.end(),
+        std::back_inserter(X_symDifference));
+      width_my = 5; length_my = 25;    
+      for (int i = 0;i<X_symDifference.size();i++)
+      {
+        visual_tools_->publishABCDPlane(0.0, 1.0, 0.0, -X_symDifference[i], rvt::RED, length_my, width_my, height_my);
+      }
+      std::vector<float> Y_symDifference;
+      std::set_symmetric_difference(
+        Y_v.begin(), Y_v.end(),
+        Y_old.begin(), Y_old.end(),
+        std::back_inserter(Y_symDifference));
+      width_my = 25; length_my = 5;
+      for (int i = 0;i<Y_symDifference.size();i++)
+      {
+        visual_tools_->publishABCDPlane(1.0, 0.0, 0.0, -Y_symDifference[i], rvt::GREEN, length_my, width_my, height_my);
+      }
+      std::vector<float> Z_symDifference;
+      std::set_symmetric_difference(
+        Z_v.begin(), Z_v.end(),
+        Z_old.begin(), Z_old.end(),
+        std::back_inserter(Z_symDifference));
+      width_my = 25; length_my = 25;
+      for (int i = 0;i<Z_symDifference.size();i++)
+      {
+        visual_tools_->publishABCDPlane(0.0, 0.0, 1.0, -Z_symDifference[i], rvt::BLUE, length_my, width_my, height_my);
+      }  
+      X_old = X_v;
+      Y_old = Y_v;
+      Z_old = Z_v;
+    }
+    visual_tools_->trigger();
   }
 
   void publishLabelHelper(const Eigen::Isometry3d& pose, const std::string& label)
@@ -356,9 +438,6 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "visual_tools_demo");
   ROS_INFO_STREAM("Visual Tools Demo");
 
-  // Allow the action server to recieve and send ros messages
-  ros::AsyncSpinner spinner(1);
-  spinner.start();
 
   rviz_visual_tools::RvizVisualToolsDemo demo;
 
@@ -368,6 +447,10 @@ int main(int argc, char** argv)
 //   demo.testSize(x_location, rviz_visual_tools::LARGE);
 //   demo.testSizes(x_location);
 
+  // Allow the action server to recieve and send ros messages
+  ros::AsyncSpinner spinner(1);
+  spinner.start();
+  ros::waitForShutdown();
   ROS_INFO_STREAM("Shutting down.");
 
   return 0;

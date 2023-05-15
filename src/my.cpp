@@ -94,70 +94,131 @@ public:
   /**
    * description: plot planes
    */
+  // void planesHandler(const my_slam::planes_infoConstPtr& msgIn)
+  // {
+  //   double width_my_X, length_my_X, width_my_Y, length_my_Y, width_my_Z, length_my_Z, height_my;
+  //   height_my = 0.1;
+  //   width_my_X = 5; length_my_X = 25;
+  //   width_my_Y = 25; length_my_Y = 5;
+  //   width_my_Z = 150; length_my_Z = 150;
+  //   if(X_old.empty())
+  //   {    
+  //     std::vector<float> X_v(begin(msgIn->X_planes), end(msgIn->X_planes));
+  //     std::vector<float> Y_v(begin(msgIn->Y_planes), end(msgIn->Y_planes));
+  //     std::vector<float> Z_v(begin(msgIn->Z_planes), end(msgIn->Z_planes));     
+  //     for (int i = 0;i<X_v.size();i++)
+  //     {
+  //       visual_tools_->publishABCDPlane(0.0, 1.0, 0.0, -X_v[i], rvt::RED, length_my_X, width_my_X, height_my);
+  //     }   
+  //     for (int i = 0;i<Y_v.size();i++)
+  //     {
+  //       visual_tools_->publishABCDPlane(1.0, 0.0, 0.0, -Y_v[i], rvt::GREEN, length_my_Y, width_my_Y, height_my);
+  //     }
+  //     for (int i = 0;i<Z_v.size();i++)
+  //     {
+  //       visual_tools_2->publishABCDPlane(0.0, 0.0, 1.0, -Z_v[i], rvt::BLUE, length_my_Z, width_my_Z, height_my);
+  //     }
+
+  //     X_old = X_v;
+  //     Y_old = Y_v;
+  //     Z_old = Z_v;
+  //   }
+  //   else
+  //   {
+  //     std::vector<float> X_v(begin(msgIn->X_planes), end(msgIn->X_planes));
+  //     std::vector<float> Y_v(begin(msgIn->Y_planes), end(msgIn->Y_planes));
+  //     std::vector<float> Z_v(begin(msgIn->Z_planes), end(msgIn->Z_planes));
+  //     std::vector<float> X_symDifference;
+  //     std::set_symmetric_difference(
+  //       X_v.begin(), X_v.end(),
+  //       X_old.begin(), X_old.end(),
+  //       std::back_inserter(X_symDifference));   
+  //     for (int i = 0;i<X_symDifference.size();i++)
+  //     {
+  //       visual_tools_->publishABCDPlane(0.0, 1.0, 0.0, -X_symDifference[i], rvt::RED, length_my_X, width_my_X, height_my);
+  //     }
+  //     std::vector<float> Y_symDifference;
+  //     std::set_symmetric_difference(
+  //       Y_v.begin(), Y_v.end(),
+  //       Y_old.begin(), Y_old.end(),
+  //       std::back_inserter(Y_symDifference));
+  //     for (int i = 0;i<Y_symDifference.size();i++)
+  //     {
+  //       visual_tools_->publishABCDPlane(1.0, 0.0, 0.0, -Y_symDifference[i], rvt::GREEN, length_my_Y, width_my_Y, height_my);
+  //     }
+  //     std::vector<float> Z_symDifference;
+  //     std::set_symmetric_difference(
+  //       Z_v.begin(), Z_v.end(),
+  //       Z_old.begin(), Z_old.end(),
+  //       std::back_inserter(Z_symDifference));
+  //     for (int i = 0;i<Z_symDifference.size();i++)
+  //     {
+  //       visual_tools_2->publishABCDPlane(0.0, 0.0, 1.0, -Z_symDifference[i], rvt::BLUE, length_my_Z, width_my_Z, height_my);
+  //     }  
+  //     X_old = X_v;
+  //     Y_old = Y_v;
+  //     Z_old = Z_v;
+  //   }
+  //   visual_tools_->trigger();
+  //   visual_tools_2->trigger();
+  // }
   void planesHandler(const my_slam::planes_infoConstPtr& msgIn)
   {
     double width_my_X, length_my_X, width_my_Y, length_my_Y, width_my_Z, length_my_Z, height_my;
-    height_my = 0.02;
+    height_my = 0.1;
     width_my_X = 5; length_my_X = 25;
     width_my_Y = 25; length_my_Y = 5;
-    width_my_Z = 150; length_my_Z = 150;
+    width_my_Z = 25; length_my_Z = 25;
     if(X_old.empty())
     {    
       std::vector<float> X_v(begin(msgIn->X_planes), end(msgIn->X_planes));
       std::vector<float> Y_v(begin(msgIn->Y_planes), end(msgIn->Y_planes));
       std::vector<float> Z_v(begin(msgIn->Z_planes), end(msgIn->Z_planes));     
-      for (int i = 0;i<X_v.size();i++)
+      for (int i = 0;i<X_v.size();i=i+3)
       {
-        visual_tools_->publishABCDPlane(0.0, 1.0, 0.0, -X_v[i], rvt::RED, length_my_X, width_my_X, height_my);
+        visual_tools_->publishABCXYZPlane(0.0, 1.0, 0.0, X_v[i], X_v[i+1], X_v[i+2], rvt::RED, length_my_X, width_my_X, height_my);
+        X_old.push_back(X_v[i+1]);
       }   
-      for (int i = 0;i<Y_v.size();i++)
+      for (int i = 0;i<Y_v.size();i=i+3)
       {
-        visual_tools_->publishABCDPlane(1.0, 0.0, 0.0, -Y_v[i], rvt::GREEN, length_my_Y, width_my_Y, height_my);
+        visual_tools_->publishABCXYZPlane(1.0, 0.0, 0.0, Y_v[i], Y_v[i+1], Y_v[i+2], rvt::GREEN, length_my_Y, width_my_Y, height_my);
+        Y_old.push_back(Y_v[i]);
       }
-      for (int i = 0;i<Z_v.size();i++)
+      for (int i = 0;i<Z_v.size();i=i+3)
       {
-        visual_tools_2->publishABCDPlane(0.0, 0.0, 1.0, -Z_v[i], rvt::BLUE, length_my_Z, width_my_Z, height_my);
+        visual_tools_2->publishABCXYZPlane(0.0, 0.0, 1.0, Z_v[i], Z_v[i+1], Z_v[i+2], rvt::BLUE, length_my_Z, width_my_Z, height_my);
+        Z_old.push_back(Z_v[i+2]);
       }
-
-      X_old = X_v;
-      Y_old = Y_v;
-      Z_old = Z_v;
     }
     else
     {
       std::vector<float> X_v(begin(msgIn->X_planes), end(msgIn->X_planes));
       std::vector<float> Y_v(begin(msgIn->Y_planes), end(msgIn->Y_planes));
-      std::vector<float> Z_v(begin(msgIn->Z_planes), end(msgIn->Z_planes));
-      std::vector<float> X_symDifference;
-      std::set_symmetric_difference(
-        X_v.begin(), X_v.end(),
-        X_old.begin(), X_old.end(),
-        std::back_inserter(X_symDifference));   
-      for (int i = 0;i<X_symDifference.size();i++)
+      std::vector<float> Z_v(begin(msgIn->Z_planes), end(msgIn->Z_planes)); 
+      for (int i = 0;i<X_v.size();i=i+3)
       {
-        visual_tools_->publishABCDPlane(0.0, 1.0, 0.0, -X_symDifference[i], rvt::RED, length_my_X, width_my_X, height_my);
+        if(std::find(X_old.begin(), X_old.end(), X_v[i+1]) == X_old.end())
+        {
+          visual_tools_->publishABCXYZPlane(0.0, 1.0, 0.0, X_v[i], X_v[i+1], X_v[i+2], rvt::RED, length_my_X, width_my_X, height_my);
+          X_old.push_back(X_v[i+1]);
+        }
       }
-      std::vector<float> Y_symDifference;
-      std::set_symmetric_difference(
-        Y_v.begin(), Y_v.end(),
-        Y_old.begin(), Y_old.end(),
-        std::back_inserter(Y_symDifference));
-      for (int i = 0;i<Y_symDifference.size();i++)
+      for (int i = 0;i<Y_v.size();i=i+3)
       {
-        visual_tools_->publishABCDPlane(1.0, 0.0, 0.0, -Y_symDifference[i], rvt::GREEN, length_my_Y, width_my_Y, height_my);
+        if(std::find(Y_old.begin(), Y_old.end(), Y_v[i]) == Y_old.end())
+        {
+          visual_tools_->publishABCXYZPlane(1.0, 0.0, 0.0, Y_v[i], Y_v[i+1], Y_v[i+2], rvt::GREEN, length_my_Y, width_my_Y, height_my);
+          Y_old.push_back(Y_v[i]);
+        }
       }
-      std::vector<float> Z_symDifference;
-      std::set_symmetric_difference(
-        Z_v.begin(), Z_v.end(),
-        Z_old.begin(), Z_old.end(),
-        std::back_inserter(Z_symDifference));
-      for (int i = 0;i<Z_symDifference.size();i++)
+      for (int i = 0;i<Z_v.size();i=i+3)
       {
-        visual_tools_2->publishABCDPlane(0.0, 0.0, 1.0, -Z_symDifference[i], rvt::BLUE, length_my_Z, width_my_Z, height_my);
+        if(std::find(Z_old.begin(), Z_old.end(), Z_v[i+2]) == Z_old.end())
+        {
+          visual_tools_2->publishABCXYZPlane(0.0, 0.0, 1.0, Z_v[i], Z_v[i+1], Z_v[i+2], rvt::BLUE, length_my_Z, width_my_Z, height_my);
+          Z_old.push_back(Z_v[i+2]);
+        }
       }  
-      X_old = X_v;
-      Y_old = Y_v;
-      Z_old = Z_v;
     }
     visual_tools_->trigger();
     visual_tools_2->trigger();

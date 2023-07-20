@@ -197,7 +197,7 @@ public:
       std::vector<float> Z_v(begin(msgIn->Z_planes), end(msgIn->Z_planes)); 
       for (int i = 0;i<X_v.size();i=i+3)
       {
-        if(std::find(X_old.begin(), X_old.end(), X_v[i+1]) == X_old.end())
+        if(std::find(X_old.begin(), X_old.end(), X_v[i+1]) == X_old.end())//not find in old
         {
           visual_tools_->publishABCXYZPlane(0.0, 1.0, 0.0, X_v[i], X_v[i+1], X_v[i+2], rvt::RED, length_my_X, width_my_X, height_my);
           X_old.push_back(X_v[i+1]);

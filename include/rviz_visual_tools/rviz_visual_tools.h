@@ -112,7 +112,8 @@ enum colors
   TRANSLUCENT_DARK = 17,
   RAND = 18,
   CLEAR = 19,
-  DEFAULT = 20  // i.e. 'do not change default color'
+  DEFAULT = 20,  // i.e. 'do not change default color'
+  MyBLUE = 21
 };
 
 enum scales

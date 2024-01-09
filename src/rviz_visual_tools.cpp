@@ -385,6 +385,12 @@ std_msgs::ColorRGBA RvizVisualTools::getColor(colors color) const
 
   switch (color)
   {
+    case MyBLUE:
+      result.r = 0.40;
+      result.g = 0.73;
+      result.b = 0.72;
+      result.a = alpha_;
+      break;
     case RED:
       result.r = 0.8;
       result.g = 0.1;
